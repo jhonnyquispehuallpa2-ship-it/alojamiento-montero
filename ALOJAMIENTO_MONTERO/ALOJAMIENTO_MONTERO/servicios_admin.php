@@ -1,6 +1,7 @@
 <?php
 require_once "verificar_sesion.php";
 require_once "conexion.php";
+require_once "funciones.php";
 
 $editar = null;
 
@@ -36,43 +37,67 @@ $servicios = $conexion->query("SELECT * FROM servicio ORDER BY id_servicio DESC"
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios</title><link rel="stylesheet" href="admin.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="<?php echo recurso('admin.css'); ?>">
 </head>
-<body>
-<header class="cabecera-admin"><h1>Gestión de servicios</h1></header>
-<?php include "menu_admin.php"; ?>
+<body class="admin">
+<?php $titulo_pagina = "Gestión de servicios"; include "menu_admin.php"; ?>
+
 <main class="contenedor-admin">
     <section class="dos-columnas">
         <div>
             <h2><?php echo $editar ? "Modificar servicio" : "Registrar servicio"; ?></h2>
             <form class="form-admin" method="POST">
                 <input type="hidden" name="id_servicio" value="<?php echo $editar['id_servicio'] ?? 0; ?>">
-                <label>Nombre</label>
-                <input type="text" name="nombre" value="<?php echo htmlspecialchars($editar['nombre'] ?? ''); ?>" required>
-                <label>Descripción</label>
-                <textarea name="descripcion" rows="4"><?php echo htmlspecialchars($editar['descripcion'] ?? ''); ?></textarea>
-                <button type="submit">Guardar</button>
-                <?php if ($editar): ?><a class="boton-secundario" href="servicios_admin.php">Cancelar</a><?php endif; ?>
+
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" value="<?php echo htmlspecialchars($editar['nombre'] ?? ''); ?>" placeholder="Ej.: WiFi, Desayuno, Estacionamiento" required>
+                <p class="ayuda">El icono se elige automáticamente según el nombre.</p>
+
+                <label for="descripcion">Descripción</label>
+                <textarea name="descripcion" id="descripcion" rows="4"><?php echo htmlspecialchars($editar['descripcion'] ?? ''); ?></textarea>
+
+                <div class="form-botones">
+                    <button type="submit"><?php echo icono("guardar"); ?> Guardar</button>
+                    <?php if ($editar): ?><a class="boton-secundario" href="servicios_admin.php">Cancelar</a><?php endif; ?>
+                </div>
             </form>
         </div>
 
         <div>
-            <h2>Servicios registrados</h2>
+            <div class="titulo-seccion"><h2>Servicios registrados</h2><span class="contador"><?php echo $servicios->num_rows; ?></span></div>
             <div class="tabla-responsive">
                 <table>
-                    <tr><th>Servicio</th><th>Descripción</th><th>Acciones</th></tr>
+                    <thead>
+                        <tr><th>Servicio</th><th>Descripción</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody>
                     <?php while ($fila = $servicios->fetch_assoc()): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($fila['nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($fila['descripcion']); ?></td>
-                        <td><a href="?editar=<?php echo $fila['id_servicio']; ?>">Editar</a> | <a href="?eliminar=<?php echo $fila['id_servicio']; ?>" onclick="return confirm('¿Eliminar este servicio?')">Eliminar</a></td>
+                        <td data-label="Servicio">
+                            <div class="celda-principal">
+                                <span class="tarjeta-icono"><?php echo icono(icono_servicio($fila['nombre'])); ?></span>
+                                <strong><?php echo htmlspecialchars($fila['nombre']); ?></strong>
+                            </div>
+                        </td>
+                        <td data-label="Descripción"><?php echo htmlspecialchars($fila['descripcion']); ?></td>
+                        <td data-label="Acciones" class="celda-acciones">
+                            <div class="acciones">
+                                <a class="boton-accion" href="?editar=<?php echo $fila['id_servicio']; ?>" title="Editar"><?php echo icono("editar"); ?> <span class="texto-boton">Editar</span></a>
+                                <a class="boton-accion peligro" href="?eliminar=<?php echo $fila['id_servicio']; ?>" title="Eliminar" onclick="return confirm('¿Eliminar este servicio?')"><?php echo icono("eliminar"); ?> <span class="texto-boton">Eliminar</span></a>
+                            </div>
+                        </td>
                     </tr>
                     <?php endwhile; ?>
+                    </tbody>
                 </table>
             </div>
         </div>
     </section>
 </main>
+<script src="<?php echo recurso('admin.js'); ?>"></script>
 </body>
 </html>

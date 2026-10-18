@@ -1,0 +1,7 @@
+CRÉDITOS DE LAS IMÁGENES
+========================
+Fotografías (hero.jpg, nosotros.jpg, login.jpg y la carpeta habitaciones/):
+  Unsplash (https://unsplash.com) - Licencia Unsplash, uso libre y gratuito.
+
+Iconos (carpeta iconos/) y logo (logo.svg, favicon.svg):
+  Dibujados para este proyecto en formato SVG, estilo de línea inspirado en Material Design.

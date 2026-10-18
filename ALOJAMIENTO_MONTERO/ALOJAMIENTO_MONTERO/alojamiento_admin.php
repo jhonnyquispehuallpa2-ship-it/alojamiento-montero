@@ -1,6 +1,7 @@
 <?php
 require_once "verificar_sesion.php";
 require_once "conexion.php";
+require_once "funciones.php";
 
 $mensaje = "";
 
@@ -34,35 +35,41 @@ $alojamiento = $conexion->query("SELECT * FROM alojamiento LIMIT 1")->fetch_asso
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos del alojamiento</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="<?php echo recurso('admin.css'); ?>">
 </head>
-<body>
-<header class="cabecera-admin"><h1>Datos del alojamiento</h1></header>
-<?php include "menu_admin.php"; ?>
+<body class="admin">
+<?php $titulo_pagina = "Datos del alojamiento"; include "menu_admin.php"; ?>
 
 <main class="contenedor-admin">
-    <?php if ($mensaje): ?><div class="alerta exito"><?php echo $mensaje; ?></div><?php endif; ?>
+    <?php if ($mensaje): ?><div class="alerta exito" role="status"><?php echo icono("check"); ?> <?php echo $mensaje; ?></div><?php endif; ?>
 
-    <form class="form-admin" method="POST">
+    <p class="texto-ayuda">Estos datos se muestran en la página pública (portada, contacto y pie de página).</p>
+
+    <form class="form-admin form-ancho" method="POST">
         <input type="hidden" name="id_alojamiento" value="<?php echo $alojamiento['id_alojamiento']; ?>">
 
-        <label>Nombre del alojamiento</label>
-        <input type="text" name="nombre" value="<?php echo htmlspecialchars($alojamiento['nombre']); ?>" required>
+        <label for="nombre">Nombre del alojamiento</label>
+        <input type="text" name="nombre" id="nombre" value="<?php echo htmlspecialchars($alojamiento['nombre']); ?>" required>
 
-        <label>Dirección</label>
-        <input type="text" name="direccion" value="<?php echo htmlspecialchars($alojamiento['direccion']); ?>" required>
+        <label for="direccion">Dirección</label>
+        <input type="text" name="direccion" id="direccion" value="<?php echo htmlspecialchars($alojamiento['direccion']); ?>" required>
 
-        <label>Teléfono</label>
-        <input type="text" name="telefono" value="<?php echo htmlspecialchars($alojamiento['telefono']); ?>">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" name="telefono" id="telefono" inputmode="tel" value="<?php echo htmlspecialchars($alojamiento['telefono']); ?>">
+        <p class="ayuda">También se usa para el botón de WhatsApp.</p>
 
-        <label>Correo</label>
-        <input type="email" name="correo" value="<?php echo htmlspecialchars($alojamiento['correo']); ?>">
+        <label for="correo">Correo</label>
+        <input type="email" name="correo" id="correo" value="<?php echo htmlspecialchars($alojamiento['correo']); ?>">
 
-        <label>Descripción</label>
-        <textarea name="descripcion" rows="5"><?php echo htmlspecialchars($alojamiento['descripcion']); ?></textarea>
+        <label for="descripcion">Descripción</label>
+        <textarea name="descripcion" id="descripcion" rows="5"><?php echo htmlspecialchars($alojamiento['descripcion']); ?></textarea>
 
-        <button type="submit">Guardar cambios</button>
+        <div class="form-botones">
+            <button type="submit"><?php echo icono("guardar"); ?> Guardar cambios</button>
+        </div>
     </form>
 </main>
+<script src="<?php echo recurso('admin.js'); ?>"></script>
 </body>
 </html>

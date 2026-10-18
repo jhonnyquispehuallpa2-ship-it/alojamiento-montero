@@ -1,141 +1,678 @@
 /* =====================================================
-   ESTILOS SENCILLOS DEL PANEL ADMINISTRATIVO
+   ESTILOS DEL PANEL ADMINISTRATIVO Y DEL LOGIN
+   Basado en principios de Material Design:
+   - Celular (menos de 900 px): barra superior + menú deslizable.
+   - Tablet y laptop (900 a 1439 px): riel de navegación
+     (solo iconos con su nombre), deja más espacio a las tablas.
+   - Escritorio (1440 px o más): menú lateral completo.
+   - Las tablas se convierten en tarjetas cuando no hay espacio.
    ===================================================== */
 
+/* ---------- 1. Variables ---------- */
+:root {
+    --verde-oscuro: #12372a;
+    --verde: #436850;
+    --verde-claro: #adbc9f;
+    --verde-suave: #e6efe8;
+    --acento: #e0a458;
+    --fondo: #f3f6f4;
+    --blanco: #ffffff;
+    --texto: #1f2a24;
+    --gris: #5b6862;
+    --borde: #dbe3de;
+    --exito: #2e7d4f;
+    --aviso: #a86a0c;
+    --peligro: #b3261e;
+
+    --radio-chico: 8px;
+    --radio: 16px;
+    --ancho-riel: 96px;
+    --ancho-menu: 264px;
+    --alto-barra: 64px;
+
+    --elevacion-1: 0 1px 2px rgba(18, 55, 42, .10), 0 1px 3px 1px rgba(18, 55, 42, .06);
+    --elevacion-2: 0 2px 6px rgba(18, 55, 42, .12), 0 4px 12px rgba(18, 55, 42, .08);
+    --elevacion-3: 0 6px 16px rgba(18, 55, 42, .14), 0 12px 32px rgba(18, 55, 42, .10);
+
+    --transicion: 200ms cubic-bezier(.2, 0, 0, 1);
+    --fuente: Roboto, system-ui, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- 2. Base ---------- */
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f7f5;
-    color: #26332d;
+    font-family: var(--fuente);
+    font-size: 15px;
+    line-height: 1.5;
+    background: var(--fondo);
+    color: var(--texto);
+    overflow-x: hidden;
+}
+
+h1, h2, h3 {
+    line-height: 1.25;
+    color: var(--verde-oscuro);
+}
+
+h2 {
+    font-size: 18px;
+    margin: 0 0 16px;
 }
 
 a {
-    color: #24533d;
+    color: var(--verde);
 }
 
-.cabecera-admin {
-    background: #12372a;
-    color: white;
-    padding: 20px 5%;
+img {
+    max-width: 100%;
+    display: block;
 }
 
-.cabecera-admin h1 {
-    margin: 0 0 5px;
+td, p, span, strong {
+    overflow-wrap: anywhere;
 }
 
-.menu-admin {
+:focus-visible {
+    outline: 3px solid var(--acento);
+    outline-offset: 2px;
+}
+
+/* Iconos SVG en línea: toman el color del texto */
+.icono {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1.25em;
+    height: 1.25em;
+    vertical-align: -0.25em;
+}
+
+/* ---------- 3. Barra superior (top app bar) ---------- */
+.barra-admin {
+    position: sticky;
+    top: 0;
+    z-index: 30;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
-    padding: 12px 5%;
-    background: #ffffff;
-    border-bottom: 1px solid #d9e1dc;
+    min-height: var(--alto-barra);
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--borde);
 }
 
-.menu-admin a {
+.barra-titulo {
+    flex: 1;
+    min-width: 0;
+}
+
+.barra-titulo small {
+    display: none;
+    color: var(--gris);
+    font-size: 13px;
+}
+
+.barra-admin h1 {
+    margin: 0;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.barra-acciones {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.usuario-chip {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 16px 4px 4px;
+    margin-right: 4px;
+    border-radius: 999px;
+    background: var(--verde-suave);
+    color: var(--verde-oscuro);
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.usuario-chip .avatar {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--verde);
+    color: var(--blanco);
+    font-size: 18px;
+}
+
+.usuario-chip small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gris);
+}
+
+.boton-icono {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--verde-oscuro);
+    font-size: 22px;
     text-decoration: none;
-    padding: 9px 12px;
-    border-radius: 5px;
-    background: #e9f0eb;
+    cursor: pointer;
+    transition: background var(--transicion);
 }
 
-.menu-admin a.salir {
-    background: #f7dddd;
-    color: #8b1e1e;
+.boton-icono:hover {
+    background: rgba(18, 55, 42, .08);
 }
 
+.boton-icono.peligro {
+    color: var(--peligro);
+}
+
+.boton-icono.peligro:hover {
+    background: rgba(179, 38, 30, .08);
+}
+
+/* ---------- 4. Navegación lateral ---------- */
+.menu-admin {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: min(var(--ancho-menu), 85vw);
+    padding: 16px 12px;
+    background: var(--verde-oscuro);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 250ms cubic-bezier(.2, 0, 0, 1);
+}
+
+.menu-admin.abierto {
+    transform: none;
+    box-shadow: var(--elevacion-3);
+}
+
+.menu-admin-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 12px 20px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    color: var(--blanco);
+    text-decoration: none;
+}
+
+.menu-admin-logo img {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.menu-admin-logo strong {
+    display: block;
+    font-size: 16px;
+}
+
+.menu-admin-logo small {
+    color: var(--verde-claro);
+}
+
+.enlace-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 0 12px;
+    border-radius: 999px;
+    color: rgba(255, 255, 255, .82);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background var(--transicion), color var(--transicion);
+}
+
+.enlace-menu .indicador {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    font-size: 20px;
+    transition: background var(--transicion);
+}
+
+.enlace-menu:hover {
+    background: rgba(255, 255, 255, .08);
+    color: var(--blanco);
+}
+
+.enlace-menu.activo {
+    background: var(--acento);
+    color: var(--verde-oscuro);
+    font-weight: 700;
+}
+
+.menu-admin-pie {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    display: grid;
+    gap: 4px;
+}
+
+.enlace-menu.salir {
+    color: #ffb4ab;
+}
+
+.enlace-menu.salir:hover {
+    background: rgba(255, 180, 171, .12);
+}
+
+/* Fondo oscuro detrás del menú abierto en celular */
+.fondo-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, .4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transicion), visibility var(--transicion);
+}
+
+.fondo-menu.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---------- 5. Contenido ---------- */
 .contenedor-admin {
-    width: min(1200px, 92%);
-    margin: 28px auto;
+    width: min(1280px, 100% - 32px);
+    margin: 24px auto 48px;
 }
 
+.saludo {
+    margin-bottom: 24px;
+}
+
+.saludo h2 {
+    font-size: 26px;
+    margin-bottom: 4px;
+}
+
+.saludo p,
+.texto-ayuda {
+    margin: 0;
+    color: var(--gris);
+}
+
+.texto-ayuda {
+    margin-bottom: 20px;
+}
+
+/* Tarjetas de resumen del inicio */
 .tarjetas-resumen {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    margin: 20px 0 30px;
+    grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
 }
 
 .tarjeta {
-    background: white;
-    padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 4px 14px rgba(0,0,0,.07);
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow var(--transicion), transform var(--transicion), border-color var(--transicion);
 }
+
+a.tarjeta:hover {
+    border-color: transparent;
+    box-shadow: var(--elevacion-2);
+    transform: translateY(-2px);
+}
+
+.tarjeta-icono {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: var(--radio);
+    background: var(--verde-suave);
+    color: var(--verde);
+    font-size: 26px;
+}
+
+.tarjeta-icono.aviso { background: #fbecd2; color: var(--aviso); }
+.tarjeta-icono.azul  { background: #dde7f6; color: #2f5a94; }
+.tarjeta-icono.morado { background: #ece3f5; color: #6b4596; }
 
 .tarjeta strong {
     display: block;
-    font-size: 32px;
-    color: #12372a;
+    font-size: 30px;
+    line-height: 1.1;
+    color: var(--verde-oscuro);
 }
 
-.tarjeta span {
-    color: #66736c;
+.tarjeta div span {
+    color: var(--gris);
 }
 
+/* Accesos rápidos */
+.accesos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+    gap: 12px;
+}
+
+.acceso {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 12px 16px;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    font-weight: 600;
+    transition: box-shadow var(--transicion), border-color var(--transicion);
+}
+
+.acceso:hover {
+    border-color: transparent;
+    box-shadow: var(--elevacion-2);
+}
+
+.acceso .icono:first-child {
+    color: var(--verde);
+}
+
+.acceso .icono:last-child {
+    margin-left: auto;
+    color: var(--gris);
+}
+
+/* Tarjetas blancas (bloques) */
 .panel-ayuda,
 .form-admin {
-    background: white;
-    padding: 22px;
-    border-radius: 8px;
+    background: var(--blanco);
+    padding: 20px;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
 }
 
+.panel-ayuda {
+    margin-top: 32px;
+}
+
+.panel-ayuda h3 {
+    margin-top: 0;
+}
+
+.panel-ayuda p {
+    margin-bottom: 0;
+    color: var(--gris);
+}
+
+/* Formulario + tabla */
 .dos-columnas {
     display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 28px;
+    gap: 24px;
     align-items: start;
 }
 
+.dos-columnas > div {
+    min-width: 0;
+}
+
+.titulo-seccion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.titulo-seccion h2 {
+    margin: 0;
+}
+
+.contador {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--verde-suave);
+    color: var(--verde-oscuro);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* ---------- 6. Formularios ---------- */
 .form-admin {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+}
+
+.form-ancho {
+    max-width: 760px;
 }
 
 .form-admin label {
-    font-weight: bold;
-    margin-top: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+}
+
+.form-admin label:first-of-type {
+    margin-top: 0;
+}
+
+.form-admin label small {
+    font-weight: 400;
+    color: var(--gris);
 }
 
 .form-admin input,
 .form-admin select,
 .form-admin textarea,
 .form-estado select {
-    padding: 10px;
-    border: 1px solid #bfcac3;
-    border-radius: 5px;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid #a9b6ae;
+    border-radius: var(--radio-chico);
+    background: var(--blanco);
+    color: var(--texto);
     font: inherit;
+    transition: border-color var(--transicion), box-shadow var(--transicion);
 }
 
+.form-admin textarea {
+    resize: vertical;
+}
+
+.form-admin input:hover,
+.form-admin select:hover,
+.form-admin textarea:hover {
+    border-color: var(--verde-oscuro);
+}
+
+.form-admin input:focus,
+.form-admin select:focus,
+.form-admin textarea:focus,
+.form-estado select:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(67, 104, 80, .25);
+}
+
+.form-admin .ayuda {
+    margin: 0;
+    font-size: 13px;
+    color: var(--gris);
+}
+
+/* Dos campos en la misma fila cuando hay espacio */
+.fila-campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr));
+    gap: 0 12px;
+}
+
+.fila-campos > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fila-campos label,
+.fila-campos label:first-of-type {
+    margin-top: 10px;
+}
+
+.form-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.form-botones > * {
+    flex: 1 1 140px;
+}
+
+/* Botones */
 .form-admin button,
-.form-estado button {
+.form-estado button,
+.boton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 10px 20px;
     border: 0;
-    background: #436850;
-    color: white;
-    padding: 10px 14px;
-    border-radius: 5px;
+    border-radius: 999px;
+    background: var(--verde);
+    color: var(--blanco);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
     cursor: pointer;
+    overflow: hidden;
+    box-shadow: var(--elevacion-1);
+    transition: box-shadow var(--transicion), transform var(--transicion);
 }
 
 .boton-secundario {
-    display: inline-block;
-    padding: 9px 12px;
-    background: #eeeeee;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 10px 20px;
+    border: 1px solid #a9b6ae;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--verde-oscuro);
+    font-weight: 600;
     text-decoration: none;
-    border-radius: 5px;
-    text-align: center;
+    overflow: hidden;
 }
 
+/* Capa de estado (Material): se aclara al pasar el mouse y más al pulsar */
+.form-admin button::after,
+.form-estado button::after,
+.boton::after,
+.boton-secundario::after,
+.boton-accion::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--transicion);
+}
+
+.form-admin button:hover::after,
+.form-estado button:hover::after,
+.boton:hover::after,
+.boton-secundario:hover::after,
+.boton-accion:hover::after { opacity: .08; }
+
+.form-admin button:active::after,
+.form-estado button:active::after,
+.boton:active::after,
+.boton-secundario:active::after,
+.boton-accion:active::after { opacity: .16; }
+
+.form-admin button:hover,
+.form-estado button:hover,
+.boton:hover { box-shadow: var(--elevacion-2); }
+
+/* Vista previa de la imagen de la habitación */
+.vista-previa {
+    position: relative;
+    margin-top: 8px;
+    border-radius: var(--radio-chico);
+    overflow: hidden;
+    background: var(--verde-suave);
+}
+
+.vista-previa img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.vista-previa span {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(18, 55, 42, .8);
+    color: var(--blanco);
+    font-size: 12px;
+}
+
+/* ---------- 7. Tablas ---------- */
 .tabla-responsive {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
     overflow-x: auto;
-    background: white;
-    border-radius: 8px;
 }
 
 table {
@@ -145,97 +682,683 @@ table {
 
 th,
 td {
-    padding: 11px;
-    border: 1px solid #d9e1dc;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--borde);
     text-align: left;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 th {
-    background: #e9f0eb;
+    background: #f7faf8;
+    color: var(--gris);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
+tbody tr {
+    transition: background var(--transicion);
+}
+
+tbody tr:hover {
+    background: #f7faf8;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+td small {
+    color: var(--gris);
+}
+
+/* Valores cortos (precio, fechas) sin saltos de línea */
+.sin-salto {
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+.miniatura {
+    width: 64px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: var(--radio-chico);
+    object-fit: cover;
+}
+
+.celda-principal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.celda-principal .tarjeta-icono {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 12px;
+}
+
+.tabla-vacia {
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--gris);
+}
+
+/* Columna de acciones alineada a la derecha */
+th:last-child,
+td.celda-acciones {
+    text-align: right;
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+/* En la tabla las acciones muestran solo el icono (su nombre aparece al pasar el mouse) */
+.boton-accion {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--verde);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.boton-accion .icono {
+    font-size: 20px;
+}
+
+.boton-accion.peligro {
+    color: var(--peligro);
+}
+
+.texto-boton {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* Cambiar estado de la reserva */
 .form-estado {
     display: flex;
-    gap: 5px;
+    justify-content: flex-end;
+    gap: 8px;
+    align-items: center;
 }
 
+.form-estado select {
+    min-height: 40px;
+    width: auto;
+    min-width: 140px;
+}
+
+.form-estado button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 10px;
+}
+
+/* ---------- 8. Insignias de estado (chips) ---------- */
+.insignia {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: #eceeed;
+    color: #4a524e;
+}
+
+.insignia::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.insignia.exito { background: #dcf1e3; color: var(--exito); }
+.insignia.aviso { background: #fbecd2; color: var(--aviso); }
+.insignia.peligro { background: #f9dedc; color: var(--peligro); }
+
+/* ---------- 9. Alertas ---------- */
 .alerta {
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: var(--radio-chico);
+}
+
+.alerta .icono {
+    font-size: 22px;
 }
 
 .alerta.exito {
-    background: #e4f4e7;
-    border: 1px solid #9ccb9f;
+    background: #dcf1e3;
+    color: #1d5a37;
 }
 
 .alerta.error {
-    background: #f8e2e2;
-    border: 1px solid #d7a0a0;
+    background: #f9dedc;
+    color: #8c1d18;
 }
 
-/* Login */
+/* =====================================================
+   10. TABLAS COMO TARJETAS
+   "Container query": la tabla se convierte en tarjetas
+   cuando SU espacio disponible es angosto.
+   ===================================================== */
+.contenedor-admin,
+.dos-columnas > div {
+    container-type: inline-size;
+}
+
+@container (max-width: 639px) {
+    .tabla-responsive {
+        background: transparent;
+        border: 0;
+        overflow: visible;
+    }
+
+    /* La cabecera se oculta; cada celda muestra su propia etiqueta */
+    .tabla-responsive thead {
+        display: none;
+    }
+
+    .tabla-responsive table,
+    .tabla-responsive tbody,
+    .tabla-responsive tr,
+    .tabla-responsive td {
+        display: block;
+        width: 100%;
+    }
+
+    .tabla-responsive tr {
+        margin-bottom: 12px;
+        padding: 8px 16px;
+        background: var(--blanco);
+        border: 1px solid var(--borde);
+        border-radius: var(--radio);
+    }
+
+    .tabla-responsive tbody tr:hover {
+        background: var(--blanco);
+    }
+
+    .tabla-responsive td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0;
+        text-align: right;
+    }
+
+    .tabla-responsive td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        color: var(--gris);
+        font-size: 13px;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .tabla-responsive tr:last-child td {
+        border-bottom: 1px solid var(--borde);
+    }
+
+    .tabla-responsive tr td:last-child {
+        border-bottom: 0;
+    }
+
+    /* La primera celda es el título de la tarjeta */
+    .tabla-responsive td:first-child {
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .tabla-responsive td:first-child::before {
+        display: none;
+    }
+
+    /* Las acciones ocupan todo el ancho de la tarjeta y muestran su texto */
+    .tabla-responsive td.celda-acciones {
+        display: block;
+        padding-top: 12px;
+    }
+
+    .tabla-responsive td.celda-acciones::before {
+        display: none;
+    }
+
+    .acciones {
+        gap: 8px;
+    }
+
+    .acciones > * {
+        flex: 1;
+    }
+
+    .boton-accion {
+        background: var(--verde-suave);
+        color: var(--verde-oscuro);
+    }
+
+    .boton-accion.peligro {
+        background: #f9dedc;
+        color: var(--peligro);
+    }
+
+    .form-estado {
+        flex-wrap: wrap;
+    }
+
+    .form-estado select {
+        flex: 1;
+    }
+
+    .form-estado button {
+        flex: 1 1 100%;
+    }
+
+    .texto-boton {
+        position: static;
+        width: auto;
+        height: auto;
+        clip: auto;
+    }
+
+    .tabla-vacia {
+        background: var(--blanco);
+        border-radius: var(--radio);
+    }
+}
+
+/* ---------- 11. Login ---------- */
 .login-body {
     min-height: 100vh;
+    min-height: 100svh;
     display: grid;
     place-items: center;
-    background: #e9f0eb;
+    padding: 16px;
+    background:
+        linear-gradient(160deg, rgba(18, 55, 42, .92), rgba(67, 104, 80, .85)),
+        url("img/login.jpg") center / cover;
+}
+
+.login-contenedor {
+    display: grid;
+    width: min(960px, 100%);
+    background: var(--blanco);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--elevacion-3);
+}
+
+.login-imagen {
+    display: none;
+    position: relative;
+    padding: 40px;
+    color: var(--blanco);
+    background:
+        linear-gradient(180deg, rgba(18, 55, 42, .3), rgba(18, 55, 42, .9)),
+        url("img/login.jpg") center / cover;
+}
+
+.login-imagen h2 {
+    color: var(--blanco);
+    font-size: 28px;
+    margin: 0 0 8px;
+}
+
+.login-imagen p {
+    margin: 0;
+    color: rgba(255, 255, 255, .85);
 }
 
 .login-caja {
-    width: min(420px, 92%);
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 28px rgba(0,0,0,.12);
+    padding: 32px 24px;
+}
+
+.login-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.login-logo img {
+    width: 48px;
+    height: 48px;
 }
 
 .login-caja h1 {
-    color: #12372a;
+    margin: 0 0 4px;
+    font-size: 26px;
+}
+
+.login-caja > p {
+    margin: 0;
+    color: var(--gris);
 }
 
 .login-caja form {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin: 20px 0;
+    gap: 6px;
+    margin: 24px 0;
+}
+
+.login-caja label {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+}
+
+.campo-icono {
+    position: relative;
+}
+
+.campo-icono > .icono {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gris);
+    pointer-events: none;
 }
 
 .login-caja input {
-    padding: 11px;
-    border: 1px solid #bfcac3;
-    border-radius: 5px;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 48px 12px 44px;
+    border: 1px solid #a9b6ae;
+    border-radius: var(--radio-chico);
+    font: inherit;
+    transition: border-color var(--transicion), box-shadow var(--transicion);
 }
 
-.login-caja button {
-    margin-top: 8px;
-    padding: 11px;
+.login-caja input:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(67, 104, 80, .25);
+}
+
+.ver-clave {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.ver-clave .icono-ocultar,
+.ver-clave[aria-pressed="true"] .icono-mostrar { display: none; }
+.ver-clave[aria-pressed="true"] .icono-ocultar { display: inline-block; }
+
+.login-caja button[type="submit"] {
+    position: relative;
+    margin-top: 16px;
+    min-height: 52px;
     border: none;
-    border-radius: 5px;
-    background: #436850;
-    color: white;
+    border-radius: 999px;
+    background: var(--verde);
+    color: var(--blanco);
+    font: inherit;
+    font-weight: 700;
     cursor: pointer;
+    box-shadow: var(--elevacion-1);
+    transition: box-shadow var(--transicion), background var(--transicion);
+}
+
+.login-caja button[type="submit"]:hover {
+    background: var(--verde-oscuro);
+    box-shadow: var(--elevacion-2);
 }
 
 .dato-prueba {
-    padding: 12px;
-    background: #f5f7f5;
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radio-chico);
+    background: var(--verde-suave);
+    font-size: 14px;
+}
+
+.dato-prueba p {
+    margin: 0;
+}
+
+.dato-prueba .icono {
+    font-size: 20px;
+    color: var(--verde);
 }
 
 .volver {
-    display: inline-block;
-    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin-top: 12px;
+    font-weight: 600;
+    text-decoration: none;
 }
 
-@media (max-width: 850px) {
-    .tarjetas-resumen,
-    .dos-columnas {
-        grid-template-columns: 1fr;
+/* =====================================================
+   12. TABLET (600 px o más)
+   ===================================================== */
+@media (min-width: 600px) {
+    .usuario-chip {
+        display: inline-flex;
     }
 
-    .form-estado {
+    .barra-admin {
+        padding: 8px 24px;
+    }
+
+    .panel-ayuda,
+    .form-admin {
+        padding: 24px;
+    }
+
+    .login-caja {
+        padding: 48px 40px;
+    }
+}
+
+/* =====================================================
+   13. LAPTOP (900 a 1439 px): RIEL DE NAVEGACIÓN
+   Solo iconos con su nombre debajo, como en Material Design.
+   ===================================================== */
+@media (min-width: 900px) {
+    body.admin {
+        padding-left: var(--ancho-riel);
+    }
+
+    #adminMenuBtn,
+    .fondo-menu {
+        display: none;
+    }
+
+    .menu-admin {
+        width: var(--ancho-riel);
+        padding: 12px 8px;
+        transform: none;
+    }
+
+    .menu-admin-logo {
+        justify-content: center;
+        padding: 4px 0 16px;
+    }
+
+    .menu-admin-logo span {
+        display: none;
+    }
+
+    .enlace-menu {
         flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        min-height: 64px;
+        padding: 4px 0;
+        border-radius: var(--radio);
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* El nombre del enlace no se corta en dos líneas */
+    .enlace-menu span:last-child {
+        white-space: nowrap;
+        overflow-wrap: normal;
+    }
+
+    .enlace-menu .indicador {
+        width: 56px;
+        height: 32px;
+        font-size: 22px;
+    }
+
+    /* En el riel solo se colorea el indicador del icono */
+    .enlace-menu:hover,
+    .enlace-menu.salir:hover {
+        background: transparent;
+    }
+
+    .enlace-menu:hover .indicador {
+        background: rgba(255, 255, 255, .1);
+    }
+
+    .enlace-menu.activo {
+        background: transparent;
+        color: var(--blanco);
+    }
+
+    .enlace-menu.activo .indicador {
+        background: var(--acento);
+        color: var(--verde-oscuro);
+    }
+
+    .barra-admin {
+        padding: 8px 32px;
+    }
+
+    .barra-titulo small {
+        display: block;
+    }
+
+    .barra-admin h1 {
+        font-size: 20px;
+    }
+
+    .contenedor-admin {
+        width: min(1280px, 100% - 64px);
+        margin-top: 32px;
+    }
+
+    .login-contenedor {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .login-imagen {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+}
+
+/* Formulario a la izquierda y tabla a la derecha cuando hay espacio */
+@media (min-width: 1280px) {
+    .dos-columnas {
+        grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+    }
+}
+
+/* =====================================================
+   14. ESCRITORIO (1440 px o más): MENÚ LATERAL COMPLETO
+   ===================================================== */
+@media (min-width: 1440px) {
+    body.admin {
+        padding-left: var(--ancho-menu);
+    }
+
+    .menu-admin {
+        width: var(--ancho-menu);
+        padding: 16px 12px;
+    }
+
+    .menu-admin-logo {
+        justify-content: flex-start;
+        padding: 4px 12px 20px;
+    }
+
+    .menu-admin-logo span {
+        display: block;
+    }
+
+    .enlace-menu {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+        min-height: 48px;
+        padding: 0 12px;
+        border-radius: 999px;
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .enlace-menu .indicador {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
+
+    .enlace-menu:hover {
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .enlace-menu.salir:hover {
+        background: rgba(255, 180, 171, .12);
+    }
+
+    .enlace-menu:hover .indicador,
+    .enlace-menu.activo .indicador {
+        background: transparent;
+    }
+
+    .enlace-menu.activo {
+        background: var(--acento);
+        color: var(--verde-oscuro);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
     }
 }

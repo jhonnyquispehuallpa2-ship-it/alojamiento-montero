@@ -15,7 +15,7 @@ PARTE PÚBLICA:
 - Registro automático del cliente.
 - Las reservas se guardan con estado "Pendiente".
 - Contacto.
-- Diseño adaptable a celular y computadora.
+- Diseño adaptable (responsivo) a celular, tablet y computadora.
 
 PANEL ADMINISTRATIVO:
 - Inicio de sesión.
@@ -25,6 +25,8 @@ PANEL ADMINISTRATIVO:
 - Consultar clientes.
 - Consultar reservas y cambiar su estado.
 - Registrar, modificar y eliminar usuarios.
+- Menú lateral que en el celular se abre con el botón ☰.
+- En el celular las tablas se muestran como tarjetas.
 
 =======================================================
 2. INSTALACIÓN EN XAMPP
@@ -134,6 +136,26 @@ Diseño del panel administrativo.
 
 script.js
 Funciones básicas de JavaScript.
+
+admin.js
+Abre y cierra el menú del panel en celular, muestra u oculta la
+contraseña del login y muestra la vista previa de la imagen de una habitación.
+
+funciones.php
+Funciones de apoyo para la presentación:
+- imagen_habitacion(): si una habitación no tiene URL de imagen,
+  usa una imagen local según su tipo (Simple, Doble, Matrimonial,
+  Familiar o Suite). Si el tipo no coincide, usa defecto.jpg.
+- icono_servicio(): elige el icono del servicio según su nombre
+  (WiFi, estacionamiento, baño, desayuno, aire, TV, lavandería,
+  piscina, seguridad, atención, limpieza).
+- icono(): muestra un icono SVG de la carpeta img/iconos.
+- clase_estado(): da color a los estados (Disponible, Pendiente, etc.).
+
+img/
+Logo, favicon, fotos locales, imágenes por defecto de habitaciones
+(img/habitaciones) e iconos SVG (img/iconos). Todo es local, por eso
+la página se ve bien aunque no haya Internet. Créditos en img/CREDITOS.txt.
 
 bd_alojamiento.sql
 Base de datos completa con datos de prueba.

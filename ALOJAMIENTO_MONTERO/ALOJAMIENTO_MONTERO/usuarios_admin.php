@@ -1,6 +1,7 @@
 <?php
 require_once "verificar_sesion.php";
 require_once "conexion.php";
+require_once "funciones.php";
 
 $editar = null;
 $mensaje = "";
@@ -55,14 +56,17 @@ $usuarios = $conexion->query("SELECT * FROM usuario ORDER BY id_usuario DESC");
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios</title><link rel="stylesheet" href="admin.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="<?php echo recurso('admin.css'); ?>">
 </head>
-<body>
-<header class="cabecera-admin"><h1>Gestión de usuarios</h1></header>
-<?php include "menu_admin.php"; ?>
+<body class="admin">
+<?php $titulo_pagina = "Gestión de usuarios"; include "menu_admin.php"; ?>
+
 <main class="contenedor-admin">
-    <?php if ($mensaje): ?><div class="alerta error"><?php echo $mensaje; ?></div><?php endif; ?>
+    <?php if ($mensaje): ?><div class="alerta error" role="alert"><?php echo icono("alerta"); ?> <?php echo $mensaje; ?></div><?php endif; ?>
 
     <section class="dos-columnas">
         <div>
@@ -70,57 +74,66 @@ $usuarios = $conexion->query("SELECT * FROM usuario ORDER BY id_usuario DESC");
             <form class="form-admin" method="POST">
                 <input type="hidden" name="id_usuario" value="<?php echo $editar['id_usuario'] ?? 0; ?>">
 
-                <label>Nombre</label>
-                <input type="text" name="nombre" value="<?php echo htmlspecialchars($editar['nombre'] ?? ''); ?>" required>
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" value="<?php echo htmlspecialchars($editar['nombre'] ?? ''); ?>" required>
 
-                <label>Usuario</label>
-                <input type="text" name="usuario" value="<?php echo htmlspecialchars($editar['usuario'] ?? ''); ?>" required>
+                <label for="usuario">Usuario</label>
+                <input type="text" name="usuario" id="usuario" autocapitalize="none" value="<?php echo htmlspecialchars($editar['usuario'] ?? ''); ?>" required>
 
-                <label>Contraseña</label>
-                <input type="text" name="clave" value="<?php echo htmlspecialchars($editar['clave'] ?? ''); ?>" required>
+                <label for="clave">Contraseña</label>
+                <input type="text" name="clave" id="clave" value="<?php echo htmlspecialchars($editar['clave'] ?? ''); ?>" required>
 
-                <label>Rol</label>
+                <label for="rol">Rol</label>
                 <?php $rol_actual = $editar['rol'] ?? 'Administrador'; ?>
-                <select name="rol">
+                <select name="rol" id="rol">
                     <option <?php if ($rol_actual === 'Administrador') echo 'selected'; ?>>Administrador</option>
                     <option <?php if ($rol_actual === 'Recepción') echo 'selected'; ?>>Recepción</option>
                 </select>
 
-                <label>Estado</label>
+                <label for="estado">Estado</label>
                 <?php $estado_actual = $editar['estado'] ?? 'Activo'; ?>
-                <select name="estado">
+                <select name="estado" id="estado">
                     <option <?php if ($estado_actual === 'Activo') echo 'selected'; ?>>Activo</option>
                     <option <?php if ($estado_actual === 'Inactivo') echo 'selected'; ?>>Inactivo</option>
                 </select>
 
-                <button type="submit">Guardar</button>
-                <?php if ($editar): ?><a class="boton-secundario" href="usuarios_admin.php">Cancelar</a><?php endif; ?>
+                <div class="form-botones">
+                    <button type="submit"><?php echo icono("guardar"); ?> Guardar</button>
+                    <?php if ($editar): ?><a class="boton-secundario" href="usuarios_admin.php">Cancelar</a><?php endif; ?>
+                </div>
             </form>
         </div>
 
         <div>
-            <h2>Usuarios registrados</h2>
+            <div class="titulo-seccion"><h2>Usuarios registrados</h2><span class="contador"><?php echo $usuarios->num_rows; ?></span></div>
             <div class="tabla-responsive">
                 <table>
-                    <tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>
+                    <thead>
+                        <tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody>
                     <?php while ($fila = $usuarios->fetch_assoc()): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($fila['nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($fila['usuario']); ?></td>
-                        <td><?php echo htmlspecialchars($fila['rol']); ?></td>
-                        <td><?php echo htmlspecialchars($fila['estado']); ?></td>
-                        <td>
-                            <a href="?editar=<?php echo $fila['id_usuario']; ?>">Editar</a>
-                            <?php if ($fila['id_usuario'] != $_SESSION['id_usuario']): ?>
-                                | <a href="?eliminar=<?php echo $fila['id_usuario']; ?>" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
-                            <?php endif; ?>
+                        <td data-label="Nombre"><strong><?php echo htmlspecialchars($fila['nombre']); ?></strong></td>
+                        <td data-label="Usuario"><?php echo htmlspecialchars($fila['usuario']); ?></td>
+                        <td data-label="Rol"><?php echo htmlspecialchars($fila['rol']); ?></td>
+                        <td data-label="Estado"><span class="insignia <?php echo clase_estado($fila['estado']); ?>"><?php echo htmlspecialchars($fila['estado']); ?></span></td>
+                        <td data-label="Acciones" class="celda-acciones">
+                            <div class="acciones">
+                                <a class="boton-accion" href="?editar=<?php echo $fila['id_usuario']; ?>" title="Editar"><?php echo icono("editar"); ?> <span class="texto-boton">Editar</span></a>
+                                <?php if ($fila['id_usuario'] != $_SESSION['id_usuario']): ?>
+                                    <a class="boton-accion peligro" href="?eliminar=<?php echo $fila['id_usuario']; ?>" title="Eliminar" onclick="return confirm('¿Eliminar este usuario?')"><?php echo icono("eliminar"); ?> <span class="texto-boton">Eliminar</span></a>
+                                <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                     <?php endwhile; ?>
+                    </tbody>
                 </table>
             </div>
         </div>
     </section>
 </main>
+<script src="<?php echo recurso('admin.js'); ?>"></script>
 </body>
 </html>

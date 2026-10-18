@@ -1,0 +1,241 @@
+/* =====================================================
+   ESTILOS SENCILLOS DEL PANEL ADMINISTRATIVO
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7f5;
+    color: #26332d;
+}
+
+a {
+    color: #24533d;
+}
+
+.cabecera-admin {
+    background: #12372a;
+    color: white;
+    padding: 20px 5%;
+}
+
+.cabecera-admin h1 {
+    margin: 0 0 5px;
+}
+
+.menu-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 5%;
+    background: #ffffff;
+    border-bottom: 1px solid #d9e1dc;
+}
+
+.menu-admin a {
+    text-decoration: none;
+    padding: 9px 12px;
+    border-radius: 5px;
+    background: #e9f0eb;
+}
+
+.menu-admin a.salir {
+    background: #f7dddd;
+    color: #8b1e1e;
+}
+
+.contenedor-admin {
+    width: min(1200px, 92%);
+    margin: 28px auto;
+}
+
+.tarjetas-resumen {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin: 20px 0 30px;
+}
+
+.tarjeta {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.07);
+    text-align: center;
+}
+
+.tarjeta strong {
+    display: block;
+    font-size: 32px;
+    color: #12372a;
+}
+
+.tarjeta span {
+    color: #66736c;
+}
+
+.panel-ayuda,
+.form-admin {
+    background: white;
+    padding: 22px;
+    border-radius: 8px;
+}
+
+.dos-columnas {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+.form-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-admin label {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.form-admin input,
+.form-admin select,
+.form-admin textarea,
+.form-estado select {
+    padding: 10px;
+    border: 1px solid #bfcac3;
+    border-radius: 5px;
+    font: inherit;
+}
+
+.form-admin button,
+.form-estado button {
+    border: 0;
+    background: #436850;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boton-secundario {
+    display: inline-block;
+    padding: 9px 12px;
+    background: #eeeeee;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.tabla-responsive {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 11px;
+    border: 1px solid #d9e1dc;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #e9f0eb;
+}
+
+.form-estado {
+    display: flex;
+    gap: 5px;
+}
+
+.alerta {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.alerta.exito {
+    background: #e4f4e7;
+    border: 1px solid #9ccb9f;
+}
+
+.alerta.error {
+    background: #f8e2e2;
+    border: 1px solid #d7a0a0;
+}
+
+/* Login */
+.login-body {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #e9f0eb;
+}
+
+.login-caja {
+    width: min(420px, 92%);
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.12);
+}
+
+.login-caja h1 {
+    color: #12372a;
+}
+
+.login-caja form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.login-caja input {
+    padding: 11px;
+    border: 1px solid #bfcac3;
+    border-radius: 5px;
+}
+
+.login-caja button {
+    margin-top: 8px;
+    padding: 11px;
+    border: none;
+    border-radius: 5px;
+    background: #436850;
+    color: white;
+    cursor: pointer;
+}
+
+.dato-prueba {
+    padding: 12px;
+    background: #f5f7f5;
+}
+
+.volver {
+    display: inline-block;
+    margin-top: 8px;
+}
+
+@media (max-width: 850px) {
+    .tarjetas-resumen,
+    .dos-columnas {
+        grid-template-columns: 1fr;
+    }
+
+    .form-estado {
+        flex-direction: column;
+    }
+}

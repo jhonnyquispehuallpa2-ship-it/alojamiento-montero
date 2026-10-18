@@ -1,0 +1,165 @@
+PROYECTO: SISTEMA WEB PARA ALOJAMIENTO EN MONTERO
+Nivel: Técnico Medio - Sistemas Informáticos
+
+=======================================================
+1. ¿QUÉ SE IMPLEMENTÓ?
+=======================================================
+
+Se mantuvo la idea principal del estudiante y se agregó PHP + MySQL de forma sencilla.
+
+PARTE PÚBLICA:
+- Inicio y presentación del alojamiento.
+- Habitaciones con tipo, capacidad, precio y estado.
+- Servicios.
+- Formulario para solicitar una reserva.
+- Registro automático del cliente.
+- Las reservas se guardan con estado "Pendiente".
+- Contacto.
+- Diseño adaptable a celular y computadora.
+
+PANEL ADMINISTRATIVO:
+- Inicio de sesión.
+- Actualizar información del alojamiento.
+- Registrar, modificar y eliminar habitaciones.
+- Registrar, modificar y eliminar servicios.
+- Consultar clientes.
+- Consultar reservas y cambiar su estado.
+- Registrar, modificar y eliminar usuarios.
+
+=======================================================
+2. INSTALACIÓN EN XAMPP
+=======================================================
+
+PASO 1
+Copiar la carpeta ALOJAMIENTO_MONTERO_PHP_MYSQL dentro de:
+
+C:\xampp\htdocs\
+
+PASO 2
+Abrir XAMPP y encender:
+- Apache
+- MySQL
+
+PASO 3
+Abrir el navegador e ingresar a:
+
+http://localhost/phpmyadmin
+
+PASO 4
+En phpMyAdmin, utilizar la opción IMPORTAR y seleccionar:
+
+bd_alojamiento.sql
+
+El archivo crea automáticamente la base de datos:
+
+alojamiento_montero
+
+PASO 5
+Abrir la página en el navegador:
+
+http://localhost/ALOJAMIENTO_MONTERO_PHP_MYSQL/
+
+=======================================================
+3. INGRESO AL PANEL ADMINISTRATIVO
+=======================================================
+
+Desde el menú público pulsar "Administración".
+
+Usuario inicial: admin
+Contraseña: 1234
+
+También se puede ingresar directamente a:
+
+http://localhost/ALOJAMIENTO_MONTERO_PHP_MYSQL/login.php
+
+=======================================================
+4. CONEXIÓN A LA BASE DE DATOS
+=======================================================
+
+La conexión se encuentra en:
+
+conexion.php
+
+Configuración utilizada para XAMPP:
+
+Servidor: localhost
+Usuario: root
+Contraseña: vacía
+Base de datos: alojamiento_montero
+
+Si su MySQL usa otra contraseña o puerto, debe modificar ese archivo.
+
+=======================================================
+5. ARCHIVOS PRINCIPALES
+=======================================================
+
+index.php
+Página principal que consulta habitaciones y servicios desde MySQL.
+
+guardar_reserva.php
+Recibe los datos del formulario, registra al cliente y guarda la reserva.
+
+conexion.php
+Realiza la conexión con MySQL.
+
+login.php
+Permite ingresar al panel administrativo.
+
+panel.php
+Pantalla principal del administrador.
+
+alojamiento_admin.php
+Actualiza los datos generales del alojamiento.
+
+habitaciones_admin.php
+CRUD básico de habitaciones.
+
+servicios_admin.php
+CRUD básico de servicios.
+
+clientes_admin.php
+Lista los clientes registrados.
+
+reservas_admin.php
+Lista las reservas y permite cambiar su estado.
+
+usuarios_admin.php
+Registra y modifica usuarios del panel.
+
+styles.css
+Diseño de la página pública.
+
+admin.css
+Diseño del panel administrativo.
+
+script.js
+Funciones básicas de JavaScript.
+
+bd_alojamiento.sql
+Base de datos completa con datos de prueba.
+
+=======================================================
+6. NOTA SOBRE LAS CONTRASEÑAS
+=======================================================
+
+Por requerimiento del proyecto educativo, las contraseñas se guardan de forma normal,
+sin cifrado, para que el estudiante pueda entender fácilmente el funcionamiento.
+
+Esto es apropiado solamente para una demostración educativa local.
+En un sistema publicado en Internet se recomienda usar password_hash() y password_verify().
+
+=======================================================
+7. ENFOQUE DEL PROYECTO
+=======================================================
+
+El sistema está preparado para trabajar con UN alojamiento a la vez.
+Puede adaptarse a otro establecimiento cambiando desde el panel:
+- Nombre
+- Dirección
+- Teléfono
+- Correo
+- Habitaciones
+- Precios
+- Servicios
+
+No es una plataforma tipo Booking y no administra varios alojamientos simultáneamente.
